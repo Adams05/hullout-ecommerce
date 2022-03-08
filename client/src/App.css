@@ -384,6 +384,16 @@ table th {
   justify-content: center;
 }
 
+.removeItemBtn:hover {
+  cursor: pointer;
+}
+
+.checkout-card {
+  background: var(--light-color);
+  box-shadow: 10px, 5px, 5px red;
+  border-radius: 5px;
+}
+
 /* Mobile Styles */
 @media (max-width: 700px) {
   .hide-sm {
