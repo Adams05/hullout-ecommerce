@@ -1,6 +1,13 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useContext } from 'react';
+import AlertContext from '../../alert/alertContext';
+import ReactToolTip from 'react-tooltip';
 
-const CartItem = ({ item: { image, name, price, quantity } }) => {
+const CartItem = ({
+  item: { image, name, price, quantity, id },
+  removeProduct,
+}) => {
+  const { setAlert } = useContext(AlertContext);
+
   return (
     <Fragment>
       <div className='card'>
@@ -16,7 +23,20 @@ const CartItem = ({ item: { image, name, price, quantity } }) => {
           <div>
             <h3>Price: {price.formatted_with_symbol}</h3>
           </div>
-          <button className='badge btn-primary removeItemBtn'>X</button>
+          <button
+            className='badge btn-primary removeItemBtn'
+            data-tip
+            data-for='removeToolTip'
+            onClick={() => {
+              removeProduct(id);
+              setAlert('Item has been removed from your cart');
+            }}
+          >
+            X
+          </button>
+          <ReactToolTip id='removeToolTip' place='top' effect='solid'>
+            Remove item from cart
+          </ReactToolTip>
           <div>
             <h3>Quantity: {quantity}</h3>
           </div>

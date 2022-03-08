@@ -2,9 +2,19 @@ import React, { Fragment, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import CartItem from './CartItem';
 import AlertContext from '../../alert/alertContext';
+import Spinner from '../layout/Spinner';
 
-const Cart = ({ cartContent, emptyCart }) => {
+const Cart = ({
+  cartContent,
+  emptyCart,
+  removeProduct,
+  totalCost,
+  loading,
+}) => {
   const { setAlert } = useContext(AlertContext);
+
+  // If not content return spinner
+  if (loading) return <Spinner />;
 
   return (
     <div>
@@ -18,12 +28,20 @@ const Cart = ({ cartContent, emptyCart }) => {
       ) : (
         <>
           {cartContent.line_items?.map((item) => {
-            return <CartItem item={item} key={item.id} />;
+            return (
+              <CartItem
+                item={item}
+                key={item.id}
+                removeProduct={removeProduct}
+              />
+            );
           })}
           <div className='subtotal alert'>
-            <h3>Subtotal: </h3>
+            <h3>Subtotal: {totalCost}</h3>
           </div>
-          <button className='btn btn-success'>Checkout</button>
+          <Link to='/checkout' className='btn btn-success'>
+            Checkout
+          </Link>
           <button
             className='btn btn-danger'
             onClick={() => {

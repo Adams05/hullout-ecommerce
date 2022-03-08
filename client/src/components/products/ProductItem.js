@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import AlertContext from '../../alert/alertContext';
+import { Link } from 'react-router-dom';
 
 const ProductItem = ({ product: { image, price, name, id }, addProduct }) => {
   const { setAlert } = useContext(AlertContext);
@@ -29,7 +30,9 @@ const ProductItem = ({ product: { image, price, name, id }, addProduct }) => {
         >
           Buy Now
         </button>
-        <button className='btn btn-dark'>View Product</button>
+        <Link to={`/item/${id}`} className='btn btn-dark'>
+          View Product
+        </Link>
       </div>
     </div>
   );

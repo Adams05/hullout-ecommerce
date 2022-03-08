@@ -8,6 +8,9 @@ import About from './components/pages/About';
 import Cart from './components/cart/Cart';
 import Alert from './components/layout/Alert';
 import AlertState from './alert/AlertState';
+import NotFound from './components/layout/NotFound';
+import Item from './components/pages/Item';
+import CheckoutForm from './components/checkout/CheckoutForm';
 
 // let apiKey = process.env.REACT_APP_API_KEY;
 
@@ -18,26 +21,41 @@ const commerce = new Commerce(
 const App = () => {
   const [products, setProducts] = useState([]);
   const [cartContent, setCartContent] = useState([]);
+  const [loading, setLoading] = useState(true);
 
+  // Fetch products
   const fetchProducts = async () => {
     const response = await commerce.products.list();
     setProducts((response && response.data) || {});
+    setLoading(false);
   };
 
-  const fetchCartContent = async () => {
-    const response = await commerce.cart.retrieve();
+  // Fetch cart content
+  const fetchCartContent = async (cartId) => {
+    const response = await commerce.cart.retrieve(cartId);
     setCartContent(response);
+    setLoading(false);
   };
 
+  // Add products to cart
   const addProduct = async (productId, quantity) => {
     const response = await commerce.cart.add(productId, quantity);
     setCartContent(response.cart);
   };
 
+  // Remove single item from cart
+  const removeProduct = async (productId) => {
+    const response = await commerce.cart.remove(productId);
+    setCartContent(response.cart);
+  };
+
+  // Empty entire cart
   const emptyCart = async () => {
     const response = await commerce.cart.empty();
     setCartContent(response.cart);
   };
+
+  //
 
   useEffect(() => {
     fetchProducts();
@@ -54,19 +72,39 @@ const App = () => {
             <Route
               exact
               path='/'
-              element={<Home products={products} addProduct={addProduct} />}
-            />
-            <Route path='/about' element={<About />} />
-            <Route
-              path='/cart'
               element={
-                <Cart
-                  cartContent={cartContent}
+                <Home
+                  products={products}
                   addProduct={addProduct}
-                  emptyCart={emptyCart}
+                  loading={loading}
                 />
               }
             />
+            <Route path='/about' element={<About />} />
+            <Route path='*' element={<NotFound />} />
+            <Route
+              exact
+              path='/item/:id'
+              element={<Item addProduct={addProduct} />}
+            />
+            <Route
+              exact
+              path='/cart'
+              element={
+                <Cart
+                  totalCost={
+                    cartContent.subtotal &&
+                    cartContent.subtotal.formatted_with_symbol
+                  }
+                  cartContent={cartContent}
+                  addProduct={addProduct}
+                  emptyCart={emptyCart}
+                  removeProduct={removeProduct}
+                  loading={loading}
+                />
+              }
+            />
+            <Route exact path='/checkout' element={<CheckoutForm />} />
           </Routes>
         </div>
       </Router>
