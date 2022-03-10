@@ -10,7 +10,7 @@ import Alert from './components/layout/Alert';
 import AlertState from './alert/AlertState';
 import NotFound from './components/layout/NotFound';
 import Item from './components/pages/Item';
-import CheckoutForm from './components/checkout/CheckoutForm';
+import Checkout from './components/checkout/Checkout';
 
 // let apiKey = process.env.REACT_APP_API_KEY;
 
@@ -104,7 +104,11 @@ const App = () => {
                 />
               }
             />
-            <Route exact path='/checkout' element={<CheckoutForm />} />
+            <Route
+              exact
+              path='/checkout'
+              element={<Checkout cartContent={cartContent} />}
+            />
           </Routes>
         </div>
       </Router>

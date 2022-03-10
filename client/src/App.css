@@ -394,6 +394,10 @@ table th {
   border-radius: 5px;
 }
 
+.hide {
+  visibility: hidden;
+}
+
 /* Mobile Styles */
 @media (max-width: 700px) {
   .hide-sm {
