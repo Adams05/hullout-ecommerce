@@ -1,11 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react';
-import Commerce from '@chec/commerce.js';
+import { commerce } from '../../lib/commerce';
 import AlertContext from '../../alert/alertContext';
 import Spinner from '../layout/Spinner';
-
-const commerce = new Commerce(
-  'pk_test_4021682ffdcdfb1028e4229f68443824e7d9d79e6ceb3'
-);
 
 const Item = ({ addProduct }) => {
   const [product, setProduct] = useState({});
@@ -100,8 +96,12 @@ const Item = ({ addProduct }) => {
           <button
             className='btn btn-light'
             onClick={() => {
-              addProduct(product.id, quantity);
-              setAlert('Item has been added to your cart');
+              if (quantity > product.available) {
+                setAlert('Quantity cannot be more than whats available');
+              } else {
+                addProduct(product.id, quantity);
+                setAlert('Item has been added to your cart');
+              }
             }}
           >
             Add to cart

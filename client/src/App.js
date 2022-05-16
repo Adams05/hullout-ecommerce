@@ -2,7 +2,7 @@ import './App.css';
 import { useState, useEffect } from 'react';
 import Nav from './components/layout/Nav';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Commerce from '@chec/commerce.js';
+import { commerce } from './lib/commerce';
 import Home from './components/pages/Home';
 import About from './components/pages/About';
 import Cart from './components/cart/Cart';
@@ -11,17 +11,14 @@ import AlertState from './alert/AlertState';
 import NotFound from './components/layout/NotFound';
 import Item from './components/pages/Item';
 import Checkout from './components/checkout/Checkout';
-
-// let apiKey = process.env.REACT_APP_API_KEY;
-
-const commerce = new Commerce(
-  'pk_test_4021682ffdcdfb1028e4229f68443824e7d9d79e6ceb3'
-);
+import Review from './components/checkout/Review';
 
 const App = () => {
   const [products, setProducts] = useState([]);
   const [cartContent, setCartContent] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [order, setOrder] = useState({});
+  const [orderError, setOrderError] = useState('');
 
   // Fetch products
   const fetchProducts = async () => {
@@ -55,7 +52,28 @@ const App = () => {
     setCartContent(response.cart);
   };
 
-  //
+  const refreshCart = async () => {
+    const newCart = await commerce.cart.refresh();
+
+    setCartContent(newCart);
+  };
+
+  // Handle Checkout
+  const handleCheckout = async (checkoutTokenId, newOrder) => {
+    try {
+      const incomingOrder = await commerce.checkout.capture(
+        checkoutTokenId,
+        newOrder
+      );
+      setOrder(incomingOrder);
+      refreshCart();
+    } catch (error) {
+      setOrderError(
+        (error.data && error.data.error && error.data.error.message) ||
+          'An error has occured'
+      );
+    }
+  };
 
   useEffect(() => {
     fetchProducts();
@@ -107,8 +125,16 @@ const App = () => {
             <Route
               exact
               path='/checkout'
-              element={<Checkout cartContent={cartContent} />}
+              element={
+                <Checkout
+                  cartContent={cartContent}
+                  order={order}
+                  orderError={orderError}
+                  onCaptureCheckout={handleCheckout}
+                />
+              }
             />
+            <Route exact path='/review' element={<Review />} />
           </Routes>
         </div>
       </Router>
