@@ -2,9 +2,17 @@ import React, { useContext } from 'react';
 import AlertContext from '../../alert/alertContext';
 import { Link } from 'react-router-dom';
 
-const ProductItem = ({ product: { image, price, name, id }, addProduct }) => {
+const ProductItem = ({
+  product: {
+    image,
+    price,
+    name,
+    id,
+    inventory: { available },
+  },
+  addProduct,
+}) => {
   const { setAlert } = useContext(AlertContext);
-
   return (
     <div className='card text-center'>
       <div>
@@ -24,8 +32,12 @@ const ProductItem = ({ product: { image, price, name, id }, addProduct }) => {
         <button
           className='btn btn-primary'
           onClick={() => {
-            addProduct(id, 1);
-            setAlert('Item has been added to your cart');
+            if (available <= 0) {
+              setAlert('Product is out of stock');
+            } else {
+              addProduct(id, 1);
+              setAlert('Item has been added to your cart');
+            }
           }}
         >
           Buy Now

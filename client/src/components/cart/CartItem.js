@@ -8,6 +8,8 @@ const CartItem = ({
 }) => {
   const { setAlert } = useContext(AlertContext);
 
+  const priceWithQuantity = price.formatted * quantity;
+
   return (
     <Fragment>
       <div className='card'>
@@ -21,7 +23,7 @@ const CartItem = ({
             <h3>Item: {name}</h3>
           </div>
           <div>
-            <h3>Price: {price.formatted_with_symbol}</h3>
+            <h3>Price: ${priceWithQuantity}.00</h3>
           </div>
           <button
             className='badge btn-primary removeItemBtn'
@@ -39,6 +41,9 @@ const CartItem = ({
           </ReactToolTip>
           <div>
             <h3>Quantity: {quantity}</h3>
+          </div>
+          <div>
+            <h3>Available: </h3>
           </div>
         </div>
       </div>
