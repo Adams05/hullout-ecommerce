@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/hullout-ecommerce/static/css/main.67834e3b.css",
+    "main.js": "/hullout-ecommerce/static/js/main.8d044937.js",
+    "static/js/787.c4e7f8f9.chunk.js": "/hullout-ecommerce/static/js/787.c4e7f8f9.chunk.js",
+    "index.html": "/hullout-ecommerce/index.html",
+    "main.67834e3b.css.map": "/hullout-ecommerce/static/css/main.67834e3b.css.map",
+    "main.8d044937.js.map": "/hullout-ecommerce/static/js/main.8d044937.js.map",
+    "787.c4e7f8f9.chunk.js.map": "/hullout-ecommerce/static/js/787.c4e7f8f9.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.67834e3b.css",
+    "static/js/main.8d044937.js"
+  ]
+}
