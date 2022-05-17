@@ -1,0 +1,4 @@
+{
+  "mongoURI": "mongodb+srv://admin:admin123@hulloutdb.kx4j9.mongodb.net/?retryWrites=true&w=majority",
+  "jwtSecret": "secret"
+}
